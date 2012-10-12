@@ -1,21 +1,17 @@
-from BeautifulSoup import BeautifulSoup
-from django.utils.html import strip_tags
-from firstclass.utils import call_or_format
-from .settings import FIRSTCLASS_PLAINTEXT_RULES
+from bs4 import BeautifulSoup
+from .settings import FIRSTCLASS_PLAINTEXT_RULES, process_soup
+import re
 
 class PlainTextMiddleware(object):
     def process_message(self, message):
         if hasattr(message, 'attach_alternative'):
             message.attach_alternative(message.body, 'text/html')
-
-        soup = BeautifulSoup(message.body)
-
-        for selector, format in FIRSTCLASS_PLAINTEXT_RULES.iteritems():
-            for el in soup.findAll(selector):
-                text = call_or_format(format, dict(el.attrs, text=getattr(el, 'text')))
-                el.replaceWith(text)
-
-        text = strip_tags(unicode(soup))
-        message.body = text
-
+        
+        message.body = html_to_text(message.body)
         return message
+        
+def html_to_text(html):            
+    html = re.sub('\n\n+', '\n\n', html.strip())
+    soup = BeautifulSoup(html)   
+    text = process_soup(soup)
+    return text

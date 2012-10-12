@@ -23,8 +23,8 @@ def get_cls_by_name(name, aliases={}, imp=None, package=None, sep='.', **kwargs)
 
     return getattr(module, cls_name)
 
-def call_or_format(func, attrs):
+def call_or_format(func, attrs, **kwargs):
     if hasattr(func, '__call__'):
-        return func(attrs)
+        return func(attrs, **kwargs)
 
     return func % attrs
