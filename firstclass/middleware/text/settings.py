@@ -128,10 +128,8 @@ def parse_row(row_elem):
 
 # adapted from http://stackoverflow.com/a/12539081/394337
 def make_table(grid):
-    print [tup for tup in grid]
     num_cols = max([len(row) for (row, is_head, is_foot) in grid])
     col_widths = [max(len(row[i][0]) for (row, row_head, row_foot) in grid) for i in range(num_cols)]
-    print col_widths
     rst = [table_div(None, col_widths, 0)]
     # 1 element, at index 0 at this point
     for ind, (row, is_header, is_footer) in enumerate(grid):
@@ -140,7 +138,6 @@ def make_table(grid):
         cols_filled = 0
         cell_widths = []
         for (cell_text, is_header, colspan) in row:
-            print col_widths[cols_filled:cols_filled + colspan]
             cell_width = sum(col_widths[cols_filled:cols_filled + colspan]) + colspan - 1
             cells.append(normalize_cell(cell_text, cell_width))
             cols_filled += colspan
@@ -166,7 +163,6 @@ def table_div(cells, col_widths, all_headers, cell_widths=None):
     return '+' + '+'.join(parts) + '+'
 
 def normalize_cell(cell_text, cell_width):
-    print cell_text, cell_width, len(cell_text)
     return cell_text + (' ' * (cell_width - len(cell_text)))   
 
 # Deprecated
