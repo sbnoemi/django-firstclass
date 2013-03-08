@@ -40,7 +40,7 @@ def ol_to_text(attrs, **kwargs):
     if not elem:
         return ''
     items = [process_soup(item) for item in elem.find_all(['li'], recursive=False)]
-    items = ['\t%d. %s' % (index, item) for item in enumerate(items)]
+    items = ['\t%d. %s' % (index, item) for index, item in enumerate(items)]
     return '\n'.join(items)
     
 def h1_to_text(attrs, **kwargs):
