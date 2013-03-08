@@ -4,7 +4,7 @@ from firstclass.utils import call_or_format
 
 def process_soup(soup):
     for selector, format in FIRSTCLASS_PLAINTEXT_RULES.iteritems():
-        for el in soup.find_all(selector):
+        for el in reversed(soup.find_all(selector)):
             text = call_or_format(format, dict(el.attrs, text=getattr(el, 'text')), element=el)
             el.replaceWith(text)
     text = strip_tags(unicode(soup))
