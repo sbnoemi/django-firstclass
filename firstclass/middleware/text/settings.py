@@ -129,7 +129,7 @@ def parse_row(row_elem):
 # adapted from http://stackoverflow.com/a/12539081/394337
 def make_table(grid):
     num_cols = max([len(row) for (row, is_head, is_foot) in grid])
-    col_widths = [max(len(row[i][0]) for (row, row_head, row_foot) in grid) for i in range(num_cols)]
+    col_widths = [max(len(row[0][0]) for (row, row_head, row_foot) in grid) for i in range(num_cols)]
     rst = [table_div(None, col_widths, 0)]
     # 1 element, at index 0 at this point
     for ind, (row, is_header, is_footer) in enumerate(grid):
@@ -138,9 +138,9 @@ def make_table(grid):
         cols_filled = 0
         cell_widths = []
         for (cell_text, is_header, colspan) in row:
-            cell_width = sum(col_widths[cols_filled:cols_filled + colspan]) + colspan - 1
+            cell_width = sum(col_widths[cols_filled:cols_filled + int(colspan)]) + int(colspan) - 1
             cells.append(normalize_cell(cell_text, cell_width))
-            cols_filled += colspan
+            cols_filled += int(colspan)
             cell_widths.append(cell_width)
         rst.append('| ' + ' | '.join(cells) + ' |')
         rst.append(table_div(row, col_widths, (is_header or is_footer), cell_widths=cell_widths))
